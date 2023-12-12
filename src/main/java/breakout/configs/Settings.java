@@ -40,7 +40,7 @@ public class Settings {
 
     public int maxLevel = 20;
     public Color levelColor = Color.GHOSTWHITE;
-    public double levelX = 30, levelY = canvasHeight + 30.0;
+    public final double levelX = canvasWidth - 30.0, levelY = canvasHeight - 30.0;
     public final int levelShowSize = 40, levelHideSize = 24;
 
     // Doodads
@@ -64,7 +64,7 @@ public class Settings {
     public final int playerWidth = 120, playerHeight = 20, playerArc = 8;
     public final double playerX = appWidth / 2.0 - playerWidth / 2.0, playerY = (appHeight - 60.0) - playerHeight / 2.0;
     public final Color playerColor = Color.LIGHTGRAY;
-    public final int playerInitialLife = 5;
+    public final int playerInitialLife = 20;
     public final Color playerLifeColor = Color.LIGHTCORAL;
 
     public final double playerResizeVelocity = 4.0;
@@ -88,8 +88,6 @@ public class Settings {
     public final Color orbColor = Color.DARKGRAY;
     public final int orbTrailPiecesNum = 4;
     public final Color[] orbTrailColors = new Color[] {Color.BLACK, Color.DARKGRAY, Color.LIGHTGRAY};
-    public final double unfiredOrbX = canvasWidth - 30.0, unfiredOrbY = canvasHeight - 30.0;
-    public final int unfiredOrbCountShowSize = 40, unfiredOrbCountHideSize = 24;
 
     // Brick
     public final int brickWidth = 34, brickHeight = 24;

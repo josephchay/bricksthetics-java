@@ -12,7 +12,6 @@ import breakout.entities.enemies.bricks.collectibles.CollectibleBrick;
 import breakout.entities.enemies.bricks.collectibles.drops.CollectibleCollection;
 import breakout.entities.enemies.bricks.collectibles.drops.LargePaddleCollectible;
 import breakout.entities.enemies.bricks.collectibles.drops.LifeCollectible;
-import breakout.entities.enemies.bricks.collectibles.drops.MultiorbCollectible;
 import breakout.entities.enemies.bricks.tags.BrickScore;
 import breakout.entities.enemies.bricks.tags.BrickType;
 import breakout.entities.players.cannons.Cannon;
@@ -67,7 +66,6 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
     private List<Effect> entityEffects = new ArrayList<>();
     private boolean destroyedABrick = false;
     private boolean gainedALife = false;
-    private boolean gainedAMultiorb = false;
 
     private int level = 1;
     private boolean levelUp = false;
@@ -203,9 +201,6 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
                         break;
                     case LIFE:
                         brick = rectangleCollectibleBrickFactory.createLife(x, y);
-                        break;
-                    case MULTIORB:
-                        brick = rectangleCollectibleBrickFactory.createMultiorb(x, y);
                         break;
                     default:
                         brick = rectangleStandardBrickFactory.createStandard(x, y);
@@ -430,7 +425,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
             updateLifeStatus();
             updateScoreStatus();
             updateLevelStatus();
-            updateOrbStatus();
+            updateLevelStatus();
             if (bricks.getComboCount() > 0) {
                 updateComboStatus();
             }
@@ -504,10 +499,10 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
         });
     }
 
-    private void updateOrbStatus() {
+    private void updateLevelStatus() {
         AutomatedLog.wrapEvent("Updating all orbs status in arena", () -> {
-            Text text = new Text(String.valueOf(cannon.getAmmo()));
-            text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, gainedAMultiorb ? settings.unfiredOrbCountShowSize : settings.unfiredOrbCountHideSize));
+            Text text = new Text(String.valueOf(level));
+            text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, levelUp ? settings.levelShowSize : settings.levelHideSize));
             text.setStyle("-fx-letter-spacing: 5px;");
             text.setFill(settings.orbColor);
 
@@ -525,48 +520,11 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
             params.setFill(Color.TRANSPARENT);
             WritableImage image = container.snapshot(params, null);
 
-            double centerX = settings.unfiredOrbX;
-            double centerY = settings.unfiredOrbY;
+            double centerX = settings.levelX;
+            double centerY = settings.levelY;
 
             double x = centerX - (image.getWidth() / 2);
             double y = centerY - (image.getHeight() / 2);
-
-            graphics.drawImage(image, x, y);
-
-            if (gainedAMultiorb) {
-                PauseTransition pause = new PauseTransition(Duration.millis(140));
-                pause.setOnFinished(event -> gainedAMultiorb = false);
-                pause.play();
-            }
-        });
-    }
-
-    private void updateLevelStatus() {
-        AutomatedLog.wrapEvent("Updating the stage level of the arena", () -> {
-            Text text = new Text("Level: " + level);
-            text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, levelUp ? settings.levelShowSize : settings.levelHideSize));
-            text.setStyle("-fx-letter-spacing: 5px;");
-            text.setFill(settings.levelColor); // Assuming you have a color setting for level
-
-            DropShadow glow = new DropShadow();
-            glow.setColor(settings.levelColor); // Use the color for level
-            glow.setSpread(0.4);
-            glow.setRadius(20);
-            text.setEffect(glow);
-
-            StackPane container = new StackPane(text);
-            container.setAlignment(Pos.BOTTOM_LEFT);
-            container.setPrefSize(view.getCanvas().getWidth(), view.getCanvas().getHeight());
-
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            WritableImage image = container.snapshot(params, null);
-
-            double leftX = settings.levelX;
-            double leftY = settings.levelY;
-
-            double x = leftX - (image.getWidth() / 2);
-            double y = leftY - (image.getHeight() / 2);
 
             graphics.drawImage(image, x, y);
 
@@ -708,17 +666,6 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
                         gainedALife = true;
 
                         audios.play("playerHeal");
-                    } else if (collectible instanceof MultiorbCollectible multiorb) {
-                        cannon.randomizePosition(settings.appWidth);
-
-                        Orb orb = orbFactory.createOrbUnloaded(settings.orbY, settings.orbRadius, settings.orbColor);
-                        orb.setX((cannon.getX() + cannon.getWidth() / 2.0) - settings.orbRadius / 2.0);
-                        orbs.add(orb);
-
-                        cannon.addAmmo(orb);
-                        gainedAMultiorb = true;
-
-                        paddle.wall(settings.appHeight);
                     }
 
                     audios.play("playerCollect");

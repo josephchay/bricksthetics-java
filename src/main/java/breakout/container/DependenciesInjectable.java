@@ -5,7 +5,6 @@ import breakout.configs.Environment;
 import breakout.core.contracts.DefaultDependenciesInjectable;
 import breakout.entities.enemies.bricks.collectibles.drops.CollectibleFactory;
 import breakout.entities.enemies.bricks.collectibles.rectangle.RectangleCollectibleBrickFactory;
-import breakout.entities.enemies.bricks.hazards.rectangle.RectangleHazardBrickFactory;
 import breakout.entities.enemies.bricks.standards.rectangle.RectangleStandardBrickFactory;
 import breakout.entities.players.PlayerFactory;
 import breakout.entities.projectiles.orbs.standards.StandardOrbFactory;
@@ -22,7 +21,6 @@ public interface DependenciesInjectable extends DefaultDependenciesInjectable {
     Settings settings = (Settings) container.get("settings");
 
     RectangleCollectibleBrickFactory rectangleCollectibleBrickFactory = (RectangleCollectibleBrickFactory) container.get("rectangleCollectibleBrickFactory");
-    RectangleHazardBrickFactory rectangleHazardBrickFactory = (RectangleHazardBrickFactory) container.get("rectangleHazardBrickFactory");
     RectangleStandardBrickFactory rectangleStandardBrickFactory = (RectangleStandardBrickFactory) container.get("rectangleStandardBrickFactory");
 
     CollectibleFactory collectibleFactory = (CollectibleFactory) container.get("collectibleFactory");
