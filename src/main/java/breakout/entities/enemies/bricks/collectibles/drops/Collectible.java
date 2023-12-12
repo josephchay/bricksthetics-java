@@ -16,6 +16,14 @@ import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
+/**
+ * Mainly refactored from the original Bonus class.
+ *
+ * @see <a href="https://github.com/kooitt/CourseworkGame/tree/master/src/main/java/brickGame">Original Bonus Class</a>
+ *
+ * The collectibles drop after a brick that has special rewards is destroyed.
+ * The reward is then applied to the player when the paddle catches the collectible.
+ */
 abstract public class Collectible extends breakout.core.entities.props.Collectible implements DependenciesInjectable {
     protected Rotate rotate;
     protected Timeline timeline;

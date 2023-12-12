@@ -8,6 +8,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Mainly refactored from the original Block class
+ * @see <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/Block.java">Original Block Class</a>
+ * Most functionalities are respectively defined specifically in needed class that extends this abstract class.
+ */
 abstract public class Brick extends Enemy implements DependenciesInjectable {
     protected static BrickType type;
     protected int arc = settings.brickArc;

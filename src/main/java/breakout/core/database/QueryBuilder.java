@@ -8,6 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Refactored mainly from the LoadSave class.
+ * @see <a href="https://github.com/kooitt/CourseworkGame/tree/master/src/main/java/brickGame">Original LoadSave Class</a>
+ *
+ * This class builds the query making respective files in the local acting as a database.
+ * This class is mainly tailored to database migration in the future, whereby only small changes are required.
+ */
 public class QueryBuilder implements DefaultDependenciesInjectable, Queryable {
     private String dbPath;
 

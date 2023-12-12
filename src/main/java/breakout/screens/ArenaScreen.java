@@ -48,6 +48,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Refactored mainly from the Main and GameEngine files
+ * @see <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/Main.java">Original Main Class</a>
+ * @see <a href="https://github.com/kooitt/CourseworkGame/blob/master/src/main/java/brickGame/GameEngine.java">Original GameEngine Class</a>
+ *
+ *
+ * Scoring system is also made functional in this class due to its ties with the "screen" which handles the entire game field.
+ * @see <a href="https://github.com/kooitt/CourseworkGame/tree/master/src/main/java/brickGame">Original Score Class</a>
+ *
+ */
 public class ArenaScreen extends breakout.core.screens.ArenaScreen implements DependenciesInjectable {
     private Parallax background;
     private Shaker shaker;
