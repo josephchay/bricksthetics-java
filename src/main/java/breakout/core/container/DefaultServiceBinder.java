@@ -4,7 +4,7 @@ import breakout.core.audio.AudioSystem;
 import breakout.core.configs.Environment;
 import breakout.core.database.Connector;
 import breakout.core.file.Filesystem;
-import breakout.core.image.ImagerySystem;
+import breakout.core.imaging.ImagerySystem;
 import breakout.core.logging.AuditLogger;
 import breakout.core.logging.EventLogger;
 import breakout.core.logging.SystemLogger;

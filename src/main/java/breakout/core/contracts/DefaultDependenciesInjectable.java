@@ -5,7 +5,7 @@ import breakout.core.configs.Environment;
 import breakout.core.container.Container;
 import breakout.core.database.DB;
 import breakout.core.file.Filesystem;
-import breakout.core.image.ImagerySystem;
+import breakout.core.imaging.ImagerySystem;
 import breakout.core.logging.AuditLogger;
 import breakout.core.logging.EventLogger;
 import breakout.core.logging.SystemLogger;
