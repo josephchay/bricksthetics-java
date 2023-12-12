@@ -113,7 +113,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
         });
     }
 
-    private void loadBackground() {
+    protected void loadBackground() {
         AutomatedLog.wrapEvent("Loading background for arena", () -> {
             Image backgroundImage = imagery.imageBlurBrighten("background-level-1-5", settings.backgroundBlur, -0.2);
 
@@ -136,7 +136,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
         });
     }
 
-    private void loadOrbs() {
+    protected void loadOrbs() {
         AutomatedLog.wrapEvent("Loading projectile orb for arena", () -> {
             Orb orb = orbFactory.createOrbUnloaded(settings.orbY, settings.orbRadius, settings.orbColor);
             orbs = new OrbCollection(new ArrayList<>(List.of(orb)));
@@ -252,7 +252,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
      * @param weights  An array of weights corresponding to each brick type.
      * @return         The index of the selected brick type. If the method fails to select an index, it defaults to 0.
      */
-    private int getRandomBrickWeight(int[] weights) {
+    protected int getRandomBrickWeight(int[] weights) {
         int totalWeight = 0;
         for (int weight : weights) {
             totalWeight += weight;
@@ -755,6 +755,22 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
 
             entityEffects.removeIf(Effect::dead);
         });
+    }
+
+    public Paddle getPaddle() {
+        return paddle;
+    }
+
+    public OrbCollection getOrbs() {
+        return orbs;
+    }
+
+    public BrickCollection getBricks() {
+        return bricks;
+    }
+
+    public Parallax getBackground() {
+        return background;
     }
 
     /**

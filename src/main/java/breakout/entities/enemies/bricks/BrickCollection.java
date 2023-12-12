@@ -62,6 +62,10 @@ public class BrickCollection implements DependenciesInjectable {
         return destroyedCount;
     }
 
+    public void add(Brick brick, int row, int col) {
+        bricks[row][col] = brick;
+    }
+
     // Combo-related methods
     public void triggerCombo() {
         comboTracker.trigger();

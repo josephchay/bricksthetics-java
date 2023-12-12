@@ -47,4 +47,8 @@ public class OrbCollection implements DependenciesInjectable {
     public int size() {
         return orbs.size();
     }
+
+    public boolean isEmpty() {
+        return orbs.isEmpty();
+    }
 }
