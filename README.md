@@ -8,7 +8,7 @@ fire the randomly placed cannon (but on a fixed y position) and then controlling
 As the game progresses, each level introduces a tougher level of bricks with more health, but balancing them out by also generating more collectible bricks to introduce a fun yet layer of strategic depth.
 This game was developed with much great **focus on aesthetics**.
 
-[img](https://github.com/codebulous/COMP2042_CW_hcyjc11/tree/main/src/main/resources/images/samples/sample.png)
+![image](https://github.com/codebulous/COMP2042_CW_hcyjc11/tree/main/src/main/resources/images/samples/sample.png)
 
 This project was developed solely on JavaFX version 21 only by utilizing dependencies from the JavaFX library in Maven.
 
