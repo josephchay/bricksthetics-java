@@ -14,6 +14,25 @@ This project was developed solely on JavaFX version 21 only by utilizing depende
 
 ---
 
+## Table of Contents
+- [Project Setup](#project-setup)
+  - [Command Line](#command-line)
+  - [Intellij](#intellij)
+- [Project Structure](#project-structure)
+- [Refactoring](#refactoring)
+  - [MVC Pattern](#mvc-pattern)
+- [Project New Heavy Classes](#project-new-heavy-classes)
+- [Project Features](#project-features)
+  - [Particle Physics](#particle-physics)
+  - [Brick Explosion](#brick-explosion)
+  - [Orb Tail Trails](#orb-tail-trails)
+  - [Cannon Aim Line](#cannon-aim-line)
+- [Features To Be Implemented](#features-to-be-implemented)
+- [Code Insurance](#code-insurance)
+- [Project Hinderings](#project-hinderings)
+
+---
+
 ## Project Setup
 The project was tested on 2 different machines, and was found to be working successfully on both using both the command line and Intellij tools.
 
@@ -66,6 +85,8 @@ For instance: the `entities` folder in the core package contains `Player` and `E
 Their broad terms and surface functionalities serves the purpose of being reused in multiple projects.
 In the case of this project, the `players` are further specialized to `Paddle` and `Cannon`, while the `enemies` are further specialized to `Brick` classes.
 `projectiles` are then specialized to `Orb` class.
+
+---
 
 ## Refactoring
 ### MVC Pattern
