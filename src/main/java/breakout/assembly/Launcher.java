@@ -14,6 +14,11 @@ import java.util.HashMap;
 public class Launcher extends Application implements DependenciesInjectable {
     private static boolean providersRegistered = false;
 
+    /**
+     * Launches the application.
+     *
+     * @param args The command line arguments.
+     */
     public static void launch(String[] args) {
         registerProvidersIfUnregistered();
 
@@ -22,6 +27,9 @@ public class Launcher extends Application implements DependenciesInjectable {
         });
     }
 
+    /**
+     * Registers the service providers if they have not been registered yet.
+     */
     public static void registerProvidersIfUnregistered() {
         if (!providersRegistered) {
             new ServiceBinder().register();
@@ -31,6 +39,12 @@ public class Launcher extends Application implements DependenciesInjectable {
         }
     }
 
+    /**
+     * Starts the application.
+     * Overridden from the Application class.
+     *
+     * @param stage The stage to start the application with.
+     */
     @Override
     public void start(Stage stage) {
         AutomatedLog.wrapSys("Application startup", () -> {
@@ -39,6 +53,11 @@ public class Launcher extends Application implements DependenciesInjectable {
         });
     }
 
+    /**
+     * Registers the application routes.
+     *
+     * @param screens The screens to register.
+     */
     public static void routes(ArrayList<Screen> screens) {
         registerProvidersIfUnregistered();
 
@@ -53,6 +72,9 @@ public class Launcher extends Application implements DependenciesInjectable {
         });
     }
 
+    /**
+     * Stops the application.
+     */
     @Override
     public void stop() {
         AutomatedLog.wrapSys("Application shutdown", () -> {

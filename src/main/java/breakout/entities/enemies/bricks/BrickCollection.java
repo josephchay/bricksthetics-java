@@ -5,9 +5,18 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.function.Consumer;
 
+/**
+ * A collection of bricks.
+ *
+ * Collects all the bricks present on the arena screen
+ */
 public class BrickCollection implements DependenciesInjectable {
     private Brick[][] bricks;
     private int destroyedCount = 0;
+
+    /**
+     * Timer used to track the combo count of bricks destroyed
+     */
     private final ComboTracker comboTracker = new ComboTracker();
 
     public BrickCollection(Brick[][] items) {
@@ -81,6 +90,8 @@ public class BrickCollection implements DependenciesInjectable {
 
     /**
      * Tracks the combo count and timer for the bricks destroyed.
+     *
+     * includes a timer, and duration tracking updates
      */
     private class ComboTracker {
         private int count = 0;

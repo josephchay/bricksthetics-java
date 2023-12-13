@@ -23,6 +23,9 @@ abstract public class Brick extends Enemy implements DependenciesInjectable {
         setColor(Color.rgb(0, 255 - health * 100, 255 - health * 100));
     }
 
+    /**
+     * Damages the brick and changes its color accordingly.
+     */
     @Override
     public void damage() {
         health--;
@@ -43,12 +46,11 @@ abstract public class Brick extends Enemy implements DependenciesInjectable {
         super.die();
     }
 
+    /**
+     * Changes the color of the brick as its health decreases.
+     */
     public void deform() {
         color = Color.rgb(0, 255 - health * 100, 255 - health * 100);
-    }
-
-    public void update(double delta) {
-
     }
 
     @Override

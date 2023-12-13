@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>brick-breaker</artifactId>
+    <groupId>COMP2042_CW_hcyjc11</groupId>
+    <artifactId>COMP2042_CW_hcyjc11</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -22,17 +22,10 @@
             <version>4.13.2</version>
         </dependency>
 
-        <!-- Mockito -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx</artifactId>
             <version>21.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

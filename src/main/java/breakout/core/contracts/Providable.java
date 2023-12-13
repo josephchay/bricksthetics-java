@@ -7,7 +7,7 @@ public interface Providable {
      * @param name The abstract ID
      * @param implementation The class to be created upon each request.
      */
-    public void registerRegular(String name, Class<?> implementation);
+    void registerRegular(String name, Class<?> implementation);
 
     /**
      * Registers a singleton object.
@@ -15,7 +15,7 @@ public interface Providable {
      * @param name The abstract ID.
      * @param object The instantiated singleton object.
      */
-    public void registerSingleton(String name, Object object);
+    void registerSingleton(String name, Object object);
 
     /**
      * Make or resolve the object if present.
@@ -23,5 +23,5 @@ public interface Providable {
      * @param name The abstract ID
      * @return The instantiated service.
      */
-    public Object make(String name);
+    Object make(String name);
 }
