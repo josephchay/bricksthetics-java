@@ -1,0 +1,8 @@
+.root {
+    -fx-background-color: #202020;
+
+    /*-fx-background-image: url('../images/doodads/backgrounds/level-1-5.png');*/
+    /*-fx-background-repeat: no-repeat;*/
+    /*-fx-background-position: center;*/
+    /*-fx-background-size: cover;*/
+}
