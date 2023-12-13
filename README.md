@@ -8,7 +8,7 @@ fire the randomly placed cannon (but on a fixed y position) and then controlling
 As the game progresses, each level introduces a tougher level of bricks with more health, but balancing them out by also generating more collectible bricks to introduce a fun yet layer of strategic depth.
 This game was developed with much great **focus on aesthetics**.
 
-![image](https://github.com/codebulous/COMP2042_CW_hcyjc11/tree/main/src/main/resources/images/samples/sample.png)
+![](https://github.com/codebulous/COMP2042_CW_hcyjc11/tree/main/src/main/resources/images/samples/sample.png)
 
 This project was developed solely on JavaFX version 21 only by utilizing dependencies from the JavaFX library in Maven.
 
@@ -162,8 +162,13 @@ Test cases using jUnit4 were also created for more crucial method functionalitie
 `PaddleTest`, `StandardOrbTest`, `CannonTest`, `StandardBrickTest`, `StandardBrickFactoryTest`, `StandardPlayerTest`, `StandardCanonTest` 
 to ensure that the code is working as intended.
 
+Necessary JavaDoc was also created for all classes and methods to ensure that the code is well documented and can be easily understood by future developers.
+Some methods may not have JavaDoc as they are self-explanatory and do not require any further explanation, or they are overriden from parent classes which already contain JavaDoc comments.
+
 The project was also converted to a Maven project to ensure that it can run without any local dependencies and can instead
 operate successfully with libraries from Maven.
+
+---
 
 ## Project Hinderings
 Throughout the more than the first three quarters of the project. Commits, merging and pushes were al of the ordinary. However,
