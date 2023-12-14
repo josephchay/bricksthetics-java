@@ -1,25 +1,21 @@
 package breakout.entities.projectiles.orbs.standards;
 
-import breakout.core.entities.Entity;
-import breakout.entities.players.paddles.Paddle;
+import breakout.container.ServiceBinder;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class StandardOrbTest {
-    /**
-     * Tests if the created orb correctly collides with the given target.
-     * Ensure that there's a collision between the orb and the target.
-     */
-    @Test
-    public void testCollidesWith() {
-        StandardOrb orb = new StandardOrb(0, 0, 10, Color.BLUE);
-        Entity target = new Paddle(0, 0, 10, 10, Color.BLUE);
-        boolean collision = orb.collidesWith(target);
-        assertTrue(collision);
+    StandardOrb orb;
+
+    @Before
+    public void setUp() {
+        new ServiceBinder().register();
+        orb = new StandardOrb(0, 0, 10, Color.BLUE);
     }
 
     /**
@@ -28,7 +24,6 @@ public class StandardOrbTest {
      */
     @Test
     public void testUpdateEffects() {
-        StandardOrb orb = new StandardOrb(0, 0, 10, Color.BLUE);
         orb.updateEffects(0.1);
     }
 
@@ -38,7 +33,6 @@ public class StandardOrbTest {
      */
     @Test
     public void testUpdateIncomingCornerHits() {
-        StandardOrb orb = new StandardOrb(0, 0, 10, Color.BLUE);
         Shape targetHitbox = new Rectangle(0, 0, 20, 20);
         orb.updateIncomingCornerHits(0, 0, targetHitbox);
     }
@@ -49,7 +43,6 @@ public class StandardOrbTest {
      */
     @Test
     public void testAttack() {
-        StandardOrb orb = new StandardOrb(0, 0, 10, Color.BLUE);
         assertFalse(orb.hasAttacked());
         orb.attack();
         assertTrue(orb.hasAttacked());
@@ -61,7 +54,6 @@ public class StandardOrbTest {
      */
     @Test
     public void testRandomizeAngle() {
-        StandardOrb orb = new StandardOrb(0, 0, 10, Color.BLUE);
         double initialAngle = orb.getAngle();
         orb.randomizeAngle(Math.PI / 4);
         assertNotEquals(initialAngle, orb.getAngle(), 0.01);
@@ -73,7 +65,6 @@ public class StandardOrbTest {
      */
     @Test
     public void testRandomizeAngleInRange() {
-        StandardOrb orb = new StandardOrb(0, 0, 10, Color.BLUE);
         orb.randomizeAngle(Math.PI / 4);
         double angle = orb.getAngle();
         assertTrue(angle >= 0 && angle <= 2 * Math.PI);

@@ -1,25 +1,34 @@
 package breakout.entities.projectiles.orbs.standards;
 
+import breakout.container.ServiceBinder;
 import breakout.entities.projectiles.orbs.Orb;
 import javafx.scene.paint.Color;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Mock test class for {@link StandardOrbFactory}.
  */
 public class StandardOrbFactoryTest {
+    StandardOrbFactory factory;
+
+    @Before
+    public void setUp() throws Exception {
+        new ServiceBinder().register();
+        factory = new StandardOrbFactory();
+    }
+
     /**
      * Mock implementation of {@link StandardOrbFactory#createOrb(double, double, int, Color)}.
      */
     @Test
-    void createOrbTest() {
-        StandardOrbFactory orbFactory = new StandardOrbFactory();
-        Orb orb = orbFactory.createOrb(10.0, 20.0, 15, Color.BLUE);
-        assertEquals(10.0, orb.getX());
-        assertEquals(20.0, orb.getY());
-        assertEquals(15, orb.getHeight() * 2);
+    public void createOrbTest() {
+        Orb orb = factory.createOrb(10.0, 20.0, 15, Color.BLUE);
+        assertEquals(10, (int) orb.getX());
+        assertEquals(20, (int) orb.getY());
+        assertEquals(30, (int) orb.getHeight() * 2);
         assertEquals(Color.BLUE, orb.getColor());
     }
 
@@ -27,11 +36,10 @@ public class StandardOrbFactoryTest {
      * Mock implementation of {@link StandardOrbFactory#createOrbUnloaded(double, int, Color)}.
      */
     @Test
-    void createOrbUnloadedTest() {
-        StandardOrbFactory orbFactory = new StandardOrbFactory();
-        Orb orb = orbFactory.createOrbUnloaded(30.0, 25, Color.RED);
-        assertEquals(30.0, orb.getY());
-        assertEquals(15, orb.getHeight() * 2);
+    public void createOrbUnloadedTest() {
+        Orb orb = factory.createOrbUnloaded(30.0, 25, Color.RED);
+        assertEquals(30, (int) orb.getY());
+        assertEquals(50, (int) orb.getHeight() * 2);
         assertEquals(Color.RED, orb.getColor());
     }
 

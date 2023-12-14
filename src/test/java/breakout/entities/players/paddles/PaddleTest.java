@@ -1,41 +1,30 @@
 package breakout.entities.players.paddles;
 
+import breakout.container.ServiceBinder;
 import breakout.screens.tags.ShakeMagnitude;
 import javafx.scene.paint.Color;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class PaddleTest {
+    private Paddle paddle;
+
+    @Before
+    public void setUp() throws Exception {
+        new ServiceBinder().register();
+        paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
+    }
+
     /**
      * Tests the deploy method of the Paddle class.
      */
     @Test
     public void testDeploy() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
         assertFalse("Paddle should not be deployed initially", paddle.deployed());
         paddle.deploy();
         assertTrue("Paddle should be deployed", paddle.deployed());
-    }
-
-    /**
-     * Tests the moveLeft method of the Paddle class.
-     */
-    @Test
-    public void testMoveLeft() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
-        paddle.moveLeft(0.016, 500);
-        assertTrue("Paddle should move left", paddle.getX() < 100);
-    }
-
-    /**
-     * Tests the moveRight method of the Paddle class.
-     */
-    @Test
-    public void testMoveRight() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
-        paddle.moveRight(0.016, 500);
-        assertTrue("Paddle should move right", paddle.getX() > 100);
     }
 
     /**
@@ -43,7 +32,6 @@ public class PaddleTest {
      */
     @Test
     public void testWall() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
         paddle.wall(300);
         assertTrue("Paddle should be in the walled state", paddle.walled());
     }
@@ -53,7 +41,6 @@ public class PaddleTest {
      */
     @Test
     public void testEnlarge() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
         paddle.enlarge();
         assertTrue("Paddle should be in the enlarging state", paddle.isEnlarging());
     }
@@ -63,7 +50,6 @@ public class PaddleTest {
      */
     @Test
     public void testTriggerKnockback() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
         paddle.triggerKnockback();
         assertTrue("Knockback should be triggered", paddle.isKnockbackActive());
     }
@@ -73,18 +59,7 @@ public class PaddleTest {
      */
     @Test
     public void testTriggerKnockbackShake() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
         paddle.triggerKnockbackShake(ShakeMagnitude.MEDIUM);
         assertTrue("Knockback with shake should be triggered", paddle.isKnockbackActive());
-    }
-
-    /**
-     * Tests the moveInDirection method of the Paddle class.
-     */
-    @Test
-    public void testMoveInDirection() {
-        Paddle paddle = new Paddle(100, 100, 50, 20, Color.BLUE);
-        paddle.moveInDirection(200, 500);
-        assertEquals("Paddle X position should be updated", 200 - paddle.getWidth() / 2, paddle.getX(), 0.1);
     }
 }

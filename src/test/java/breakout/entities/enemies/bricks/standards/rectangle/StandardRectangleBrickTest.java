@@ -1,12 +1,13 @@
 package breakout.entities.enemies.bricks.standards.rectangle;
 
-import breakout.configs.Settings;
+import breakout.container.ServiceBinder;
 import breakout.entities.enemies.bricks.Brick;
 import breakout.entities.enemies.bricks.tags.BrickType;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import org.junit.Test;
+import org.junit.Before;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,13 +16,19 @@ import static org.junit.Assert.assertTrue;
  * Test class for the {@link Brick} class.
  */
 public class StandardRectangleBrickTest {
+    private Brick brick;
+
+    @Before
+    public void setUp() {
+        new ServiceBinder().register();
+        brick = new MockBrick(0, 0);
+    }
 
     /**
      * Tests that the color of the brick is initialized correctly based on its health.
      */
     @Test
-    void initialColorTest() {
-        Brick brick = new MockBrick(0, 0);
+    public void initialColorTest() {
         int initialHealth = brick.getHealth();
         Color expectedColor = Color.rgb(0, 255 - initialHealth * 100, 255 - initialHealth * 100);
         assertEquals(expectedColor, brick.getColor());
@@ -31,8 +38,7 @@ public class StandardRectangleBrickTest {
      * Tests the damage method, ensuring that health decreases and color changes accordingly.
      */
     @Test
-    void damageTest() {
-        Brick brick = new MockBrick(0, 0);
+    public void damageTest() {
         int initialHealth = brick.getHealth();
         brick.damage();
         assertEquals(initialHealth - 1, brick.getHealth());
@@ -44,8 +50,7 @@ public class StandardRectangleBrickTest {
      * Tests the die method, making sure that the brick is killed.
      */
     @Test
-    void dieTest() {
-        Brick brick = new MockBrick(0, 0);
+    public void dieTest() {
         brick.die();
         assertTrue(brick.dead());
     }
@@ -54,8 +59,7 @@ public class StandardRectangleBrickTest {
      * Tests the deform method, checking that the color changes based on health.
      */
     @Test
-    void deformTest() {
-        Brick brick = new MockBrick(0, 0);
+    public void deformTest() {
         int initialHealth = brick.getHealth();
         brick.deform();
         Color expectedColor = Color.rgb(0, 255 - initialHealth * 100, 255 - initialHealth * 100);
@@ -66,8 +70,7 @@ public class StandardRectangleBrickTest {
      * Tests that the hitbox method returns a rectangle with the correct dimensions.
      */
     @Test
-    void hitboxTest() {
-        Brick brick = new MockBrick(0, 0);
+    public void hitboxTest() {
         Rectangle hitbox = brick.hitbox();
         assertEquals(brick.getX(), hitbox.getX());
         assertEquals(brick.getY(), hitbox.getY());
@@ -79,7 +82,7 @@ public class StandardRectangleBrickTest {
      * Tests the type method, ensuring it returns the correct brick type.
      */
     @Test
-    void typeTest() {
+    public void typeTest() {
         assertEquals(MockBrick.type(), BrickType.STANDARD);
     }
 

@@ -18,12 +18,12 @@ public class Cannon extends Player implements DependenciesInjectable {
     private int arc = settings.cannonArc;
 
     /** The number of orbs the cannon can shoot at one session. */
-    private int ammo = 1;
+    private int ammo = 0;
 
     /** Maximum angle the orb can be launched at. */
     protected double maxAngle = 75;
 
-    private OrbCollection orbs;
+    private OrbCollection orbs = new OrbCollection();
 
     /** Whether the orb has been launched. */
     protected boolean fired = false;

@@ -14,6 +14,10 @@ public class OrbCollection implements DependenciesInjectable {
     public OrbCollection(ArrayList<Orb> orbs) {
         this.orbs = orbs;
     }
+    
+    public OrbCollection() {
+        orbs = new ArrayList<>();
+    }
 
     public void each(Consumer<Orb> action) {
         orbs.forEach(action);

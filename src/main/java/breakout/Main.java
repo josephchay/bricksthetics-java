@@ -13,7 +13,5 @@ public class Main {
         ));
 
         Launcher.launch(args);
-
-//        Window.launch(args);
     }
 }
