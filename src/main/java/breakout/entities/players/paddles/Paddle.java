@@ -3,8 +3,7 @@ package breakout.entities.players.paddles;
 import breakout.container.DependenciesInjectable;
 import breakout.core.entities.actors.Player;
 
-import breakout.core.utils.Helper;
-import breakout.entities.enemies.bricks.tags.BrickScore;
+import breakout.entities.players.tags.Score;
 import breakout.screens.tags.ShakeMagnitude;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -190,7 +189,7 @@ public class Paddle extends Player implements DependenciesInjectable {
      *
      * @see Player#addScore(int) method overloaded
      */
-    public void addScore(BrickScore score) {
+    public void addScore(Score score) {
         this.score += score.getScore();
     }
 

@@ -3,7 +3,6 @@ package breakout.entities.enemies.bricks;
 import breakout.container.DependenciesInjectable;
 import breakout.core.entities.actors.Enemy;
 import breakout.entities.Modifier;
-import breakout.entities.enemies.bricks.tags.BrickType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -14,7 +13,7 @@ import javafx.scene.shape.Rectangle;
  * Most functionalities are respectively defined specifically in needed class that extends this abstract class.
  */
 abstract public class Brick extends Enemy implements DependenciesInjectable {
-    protected static BrickType type;
+    protected static breakout.entities.enemies.bricks.tags.Brick type;
     protected int arc = settings.brickArc;
 
     public Brick(double x, double y) {
@@ -74,7 +73,7 @@ abstract public class Brick extends Enemy implements DependenciesInjectable {
         return new Rectangle(x, y, width, height);
     }
 
-    public static BrickType type() {
+    public static breakout.entities.enemies.bricks.tags.Brick type() {
         return type;
     }
 }

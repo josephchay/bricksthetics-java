@@ -39,9 +39,7 @@ public class Settings {
     public final int canvasWidth = appWidth, canvasHeight = appHeight;
 
     public int maxLevel = 20;
-    public Color levelColor = Color.GHOSTWHITE;
-    public final double levelX = canvasWidth - 30.0, levelY = canvasHeight - 30.0;
-    public final int levelShowSize = 40, levelHideSize = 24;
+    public Color levelColor = Color.LIGHTGRAY;
 
     // Doodads
     public final boolean enableScreenShake = true;
@@ -85,9 +83,11 @@ public class Settings {
     public final int orbRadius = 14;
     public final double orbY = ((cannonY - cannonHeight / 2.0) - orbRadius / 2.0) - 6.0;
     public final double orbVelocity = 700.0; // per frame
-    public final Color orbColor = Color.DARKGRAY;
+    public final Color orbColor = Color.SLATEGRAY;
     public final int orbTrailPiecesNum = 4;
-    public final Color[] orbTrailColors = new Color[] {Color.BLACK, Color.DARKGRAY, Color.LIGHTGRAY};
+    public final Color[] orbTrailColors = new Color[] {Color.BLACK, Color.DARKGRAY, orbColor};
+    public final int orbStatusShowSize = 40, orbStatusHideSize = 24;
+    public final double orbStatusX = canvasWidth - 30.0, orbStatusY = canvasHeight - 30.0;
 
     // Brick
     public final int brickWidth = 34, brickHeight = 24;

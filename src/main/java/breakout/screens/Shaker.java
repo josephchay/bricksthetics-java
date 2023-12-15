@@ -37,7 +37,7 @@ public class Shaker implements DependenciesInjectable {
             view.getCanvas().setTranslateX(xShake);
             view.getCanvas().setTranslateY(yShake);
 
-            shakeCount++; // Increment the shake count
+            shakeCount++;
 
             // Stop the shake if the magnitude is below a certain threshold
             if (magnitude < 0.1) {

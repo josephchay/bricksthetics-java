@@ -1,14 +1,14 @@
 package breakout.entities.enemies.bricks.tags;
 
-public enum BrickType {
+public enum Brick {
     STANDARD(1),
-    MULTIORB(8),
+    MULTI_ORB(8),
     LARGE_PADDLE(8),
     LIFE(14);
 
     private final int rarity;
 
-    BrickType(int rarity) {
+    Brick(int rarity) {
         this.rarity = rarity;
     }
 

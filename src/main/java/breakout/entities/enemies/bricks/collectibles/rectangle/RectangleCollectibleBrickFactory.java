@@ -3,7 +3,7 @@ package breakout.entities.enemies.bricks.collectibles.rectangle;
 import breakout.entities.enemies.bricks.collectibles.LifeBrick;
 import breakout.entities.enemies.bricks.collectibles.CollectibleBrickFactory;
 import breakout.entities.enemies.bricks.collectibles.LargePaddleBrick;
-import breakout.entities.enemies.bricks.collectibles.MultiorbBrick;
+import breakout.entities.enemies.bricks.collectibles.MultiOrbBrick;
 
 public class RectangleCollectibleBrickFactory implements CollectibleBrickFactory {
     @Override
@@ -17,7 +17,7 @@ public class RectangleCollectibleBrickFactory implements CollectibleBrickFactory
     }
 
     @Override
-    public MultiorbBrick createMultiorb(int x, int y) {
-        return new MultiorbRectangleBrick(x, y);
+    public MultiOrbBrick createMultiOrb(int x, int y) {
+        return new MultiOrbRectangleBrick(x, y);
     }
 }

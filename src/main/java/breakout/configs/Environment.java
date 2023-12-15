@@ -46,6 +46,7 @@ public class Environment extends breakout.core.configs.Environment {
         setResourceSFXPath(Map.ofEntries(
             // Warmup
             Map.entry("warmup", "/sfx/miscellaneous/warmup.wav"),
+
             // Projectiles
 
             // Players
@@ -56,6 +57,7 @@ public class Environment extends breakout.core.configs.Environment {
             Map.entry("playerShrink", "/sfx/entities/players/shrink.wav"),
             Map.entry("playerHeal", "/sfx/entities/players/heal.wav"),
             Map.entry("playerDamage", "/sfx/entities/players/damage.wav"),
+            Map.entry("playerReload", "/sfx/entities/players/reload.wav"),
 
             // Enemies
             Map.entry("enemyHit", "/sfx/entities/enemies/hit.wav"),

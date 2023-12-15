@@ -10,6 +10,6 @@ public class CollectibleFactory implements breakout.core.entities.props.Collecti
     }
 
     public Collectible createMultiorb(double x, double y) {
-        return new MultiorbCollectible(x, y);
+        return new MultiOrbCollectible(x, y);
     }
 }

@@ -1,12 +1,12 @@
 package breakout.entities.enemies.bricks.collectibles;
 
-import breakout.entities.enemies.bricks.tags.BrickType;
+import breakout.entities.enemies.bricks.tags.Brick;
 import breakout.entities.enemies.bricks.tags.Collectible;
 
-abstract public class MultiorbBrick extends CollectibleBrick{
-    protected static BrickType type = BrickType.MULTIORB;
+abstract public class MultiOrbBrick extends CollectibleBrick{
+    protected static Brick type = Brick.MULTI_ORB;
 
-    public MultiorbBrick(double x, double y) {
+    public MultiOrbBrick(double x, double y) {
         super(x, y, Collectible.LARGE_PADDLE);
     }
 

@@ -3,8 +3,10 @@ package breakout.core.screens;
 import breakout.core.contracts.DefaultDependenciesInjectable;
 import breakout.core.screens.views.View;
 import breakout.helpers.AutomatedLog;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -31,18 +33,43 @@ abstract public class Screen implements DefaultDependenciesInjectable {
      */
     protected double delta = 0.0;
 
+    /**
+     * The game loop that is executed on every frame update.
+     */
+    protected AnimationTimer loop;
+
+    /**
+     * The number of times the game loop has been executed.
+     */
+    protected int loopCount = 0;
+
     protected View view;
     protected GraphicsContext graphics;
 
-    protected int loopCount = 0;
+    protected double screenWidth, screenHeight;
 
-    public Screen(Stage stage) {
+    public Screen(Stage stage, double width, double height) {
         this.stage = stage;
 
+        this.screenWidth = width;
+        this.screenHeight = height;
+    }
+
+    /**
+     * Render the screen and the view to the client.
+     */
+    public void render() {
+        load();
+        update();
+    }
+
+    /**
+     * Load all the assets for the screen.
+     */
+    protected void load() {
         loadTemplate();
         loadAssets();
-
-        configureListeners();
+        loadListeners();
 
         showStage();
     }
@@ -53,23 +80,78 @@ abstract public class Screen implements DefaultDependenciesInjectable {
     abstract protected void loadTemplate();
 
     /**
-     * Load all assets for the screen.
+     * Load and prepare all assets for the arena.
      */
     abstract protected void loadAssets();
 
     /**
      * Configure all event handler listeners for the screen.
      */
-    abstract protected void configureListeners();
+    abstract protected void loadListeners();
 
-    private void showStage() {
-        AutomatedLog.wrapEvent("Updating stage for arena.", () -> {
+    /**
+     * Display the stage.
+     */
+    protected void showStage() {
+        AutomatedLog.wrapEvent("Updating stage for arena", () -> {
             stage.show();
         });
     }
 
     /**
-     * Render the entire screen to the client.
+     * Update the entire screen to the client.
      */
-    abstract public void render();
+    protected void update() {
+        AutomatedLog.wrapEvent("Updating screen", () -> {
+            loop = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    loopCount++;
+
+                    AutomatedLog.wrapEvent("Updating screen at loop number " + loopCount, () -> {
+                        if (lastUpdate == 0) {
+                            lastUpdate = now;
+                            return;
+                        }
+
+                        delta = (now - lastUpdate) / 1_000_000_000.0; // Convert nanoseconds to seconds
+                        lastUpdate = now;
+
+                        updateAssets();
+                    });
+                }
+            };
+
+            loop.start();
+        });
+    }
+
+    /**
+     * Update the states for all assets for the screen.
+     */
+    protected void updateAssets() {
+        AutomatedLog.wrapEvent("Updating assets for arena.", () -> {
+            clearCanvas();
+            updateGraphics();
+        });
+    }
+
+    /**
+     * Clear the rectangular region of the canvas.
+     * Done to erase the previous frame of the canvas.
+     */
+    protected void clearCanvas() {
+        AutomatedLog.wrapEvent("Updating graphics for arena.", () -> {
+            graphics.clearRect(0, 0, screenWidth, screenHeight);
+        });
+    }
+
+    /**
+     * Update the graphics of the arena.
+     */
+    protected void updateGraphics() {
+        AutomatedLog.wrapEvent("Updating graphics for arena.", () -> {
+            graphics.setFill(Color.BLACK);
+        });
+    }
 }

@@ -1,10 +1,7 @@
 package breakout.core.screens;
 
-import breakout.container.DependenciesInjectable;
 import breakout.core.screens.views.ArenaView;
 import breakout.helpers.AutomatedLog;
-import javafx.animation.AnimationTimer;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -12,14 +9,11 @@ import javafx.stage.Stage;
  * This class manages the entire game arena, including player entities, enemy bricks, collectibles, and projectiles.
  * It is responsible for initializing the game state, managing game loops, rendering the game, and handling user inputs.
  */
-abstract public class ArenaScreen extends Screen implements DependenciesInjectable {
-    public ArenaScreen(Stage stage) {
-        super(stage);
+abstract public class ArenaScreen extends Screen {
+    public ArenaScreen(Stage stage, double width, double height) {
+        super(stage, width, height);
     }
 
-    /**
-     * Load the given static UI template.
-     */
     @Override
     protected void loadTemplate() {
         AutomatedLog.wrapEvent("Loading template for arena.", () -> {
@@ -28,10 +22,6 @@ abstract public class ArenaScreen extends Screen implements DependenciesInjectab
         });
     }
 
-    /**
-     * Load all assets for the arena.
-     * The loaded assets are done in the context of backend preparation.
-     */
     @Override
     protected void loadAssets() {
         AutomatedLog.wrapEvent("Loading assets for arena.", () -> {
@@ -122,62 +112,13 @@ abstract public class ArenaScreen extends Screen implements DependenciesInjectab
         });
     }
 
-    /**
-     * Configure listeners for the arena.
-     */
-    protected void configureListeners() {
-        AutomatedLog.wrapEvent("Configuring listeners for arena.", () -> {
-            view.listen();
-        });
-    }
-
-    /**
-     * Render all loaded elements to screen and perform state updates.
-     */
     @Override
-    public void render() {
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                loopCount++;
-
-                AutomatedLog.wrapEvent("Rendering screen for arena at loop number " + loopCount, () -> {
-                    if (lastUpdate == 0) {
-                        lastUpdate = now;
-                        return;
-                    }
-
-                    delta = (now - lastUpdate) / 1_000_000_000.0; // Convert nanoseconds to seconds
-                    lastUpdate = now;
-
-                    clearCanvas();
-
-                    updateProps();
-
-                    updateGraphics();
-
-                    updateEntities();
-                });
-            }
-        }.start();
-    }
-
-    /**
-     * Clear the rectangular region of the canvas.
-     * Done to erase the previous frame of the canvas.
-     */
-    protected void clearCanvas() {
-        AutomatedLog.wrapEvent("Updating graphics for arena.", () -> {
-            graphics.clearRect(0, 0, settings.appWidth, settings.appHeight);
-        });
-    }
-
-    /**
-     * Update the graphics of the arena.
-     */
-    protected void updateGraphics() {
-        AutomatedLog.wrapEvent("Updating graphics for arena.", () -> {
-            graphics.setFill(Color.BLACK);
+    protected void updateAssets() {
+        AutomatedLog.wrapEvent("Updating assets for arena.", () -> {
+            clearCanvas();
+            updateProps();
+            updateGraphics();
+            updateEntities();
         });
     }
 

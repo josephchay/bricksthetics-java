@@ -7,23 +7,22 @@ import breakout.core.database.QueryBuilder;
 import breakout.core.effects.Effect;
 import breakout.core.effects.Explosion;
 import breakout.core.effects.Parallax;
-import breakout.core.utils.Helper;
+import breakout.entities.enemies.bricks.BrickCollection;
 import breakout.entities.enemies.bricks.collectibles.CollectibleBrick;
 import breakout.entities.enemies.bricks.collectibles.drops.CollectibleCollection;
 import breakout.entities.enemies.bricks.collectibles.drops.LargePaddleCollectible;
 import breakout.entities.enemies.bricks.collectibles.drops.LifeCollectible;
-import breakout.entities.enemies.bricks.tags.BrickScore;
-import breakout.entities.enemies.bricks.tags.BrickType;
+import breakout.entities.enemies.bricks.collectibles.drops.MultiOrbCollectible;
+import breakout.entities.enemies.bricks.tags.Brick;
 import breakout.entities.players.cannons.Cannon;
+import breakout.entities.players.paddles.Paddle;
+import breakout.entities.players.tags.Score;
 import breakout.entities.projectiles.orbs.Orb;
 import breakout.entities.projectiles.orbs.OrbCollection;
 import breakout.entities.projectiles.orbs.standards.StandardOrb;
-import breakout.entities.players.paddles.Paddle;
+import breakout.helpers.AutomatedLog;
 import breakout.screens.tags.ShakeMagnitude;
 import breakout.screens.views.ArenaView;
-import breakout.entities.enemies.bricks.Brick;
-import breakout.entities.enemies.bricks.BrickCollection;
-import breakout.helpers.AutomatedLog;
 import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -40,7 +39,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -74,8 +75,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
     private QueryBuilder query;
 
     private List<Effect> entityEffects = new ArrayList<>();
-    private boolean destroyedABrick = false;
-    private boolean gainedALife = false;
+    private boolean destroyedABrick = false, gainedALife = false, gainedMultiOrb = false;
 
     private int level = 1;
     private boolean levelUp = false;
@@ -83,11 +83,8 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
 
     private boolean newGame = false, loadGame = false;
 
-    public ArenaScreen(Stage stage) {
-        super(stage);
-
-        blurrer = new Blurrer(view.getRoot());
-        shapeDrawer = new ShapeDrawer(graphics);
+    public ArenaScreen(Stage stage, double width, double height) {
+        super(stage, width, height);
     }
 
     @Override
@@ -97,6 +94,12 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
             view.build(stage);
 
             graphics = view.getGraphics();
+
+            shaker = new Shaker(view);
+            blurrer = new Blurrer(view.getRoot());
+            shapeDrawer = new ShapeDrawer(graphics);
+
+            orbs = new OrbCollection();
         });
     }
 
@@ -141,15 +144,23 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
     @Override
     protected void loadProjectiles() {
         AutomatedLog.wrapEvent("Loading projectile entities for arena", () -> {
-            loadOrbs();
+            loadOrbs(1);
         });
     }
 
-    protected void loadOrbs() {
+    protected void loadOrbs(int count) {
         AutomatedLog.wrapEvent("Loading projectile orb for arena", () -> {
-            Orb orb = orbFactory.createOrbUnloaded(settings.orbY, settings.orbRadius, settings.orbColor);
-            orbs = new OrbCollection(new ArrayList<>(List.of(orb)));
-            mainOrb = orb;
+            int i = 0;
+            while (i < count) {
+                Orb orb = orbFactory.createOrbUnloaded(settings.orbY, settings.orbRadius, settings.orbColor);
+                orbs.add(orb);
+
+                if (mainOrb == null) {
+                    mainOrb = orb;
+                }
+
+                i++;
+            }
         });
     }
 
@@ -166,7 +177,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
      */
     private void loadBricks() {
         AutomatedLog.wrapEvent("Loading enemy bricks for arena", () -> {
-            Brick[][] bricks = new Brick[settings.bricksPerCol][settings.bricksPerRow];
+            breakout.entities.enemies.bricks.Brick[][] bricks = new breakout.entities.enemies.bricks.Brick[settings.bricksPerCol][settings.bricksPerRow];
 
             if (newGame) {
                 bricks = loadNewBricks();
@@ -189,9 +200,9 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
         });
     }
 
-    protected Brick[][] loadNewBricks() {
-        Brick[][] bricks = new Brick[settings.bricksPerCol][settings.bricksPerRow];
-        BrickType[] types = BrickType.values();
+    protected breakout.entities.enemies.bricks.Brick[][] loadNewBricks() {
+        breakout.entities.enemies.bricks.Brick[][] bricks = new breakout.entities.enemies.bricks.Brick[settings.bricksPerCol][settings.bricksPerRow];
+        Brick[] types = Brick.values();
 
         for (int row = 0; row < settings.bricksPerCol; row++) {
             for (int col = 0; col < settings.bricksPerRow; col++) {
@@ -201,19 +212,12 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
                 int x = (settings.brickWidth + settings.brickWidthGap) * col + settings.brickWidthGap;
                 int y = (settings.brickHeight + settings.brickHeightGap) * row + settings.brickHeightGap;
 
-                Brick brick;
-
-                switch (types[rand]) {
-                    case LARGE_PADDLE:
-                        brick = rectangleCollectibleBrickFactory.createLargePaddle(x, y);
-                        break;
-                    case LIFE:
-                        brick = rectangleCollectibleBrickFactory.createLife(x, y);
-                        break;
-                    default:
-                        brick = rectangleStandardBrickFactory.createStandard(x, y);
-                        break;
-                }
+                breakout.entities.enemies.bricks.Brick brick = switch (types[rand]) {
+                    case LARGE_PADDLE -> rectangleCollectibleBrickFactory.createLargePaddle(x, y);
+                    case LIFE -> rectangleCollectibleBrickFactory.createLife(x, y);
+                    case MULTI_ORB -> rectangleCollectibleBrickFactory.createMultiOrb(x, y);
+                    default -> rectangleStandardBrickFactory.createStandard(x, y);
+                };
 
                 bricks[row][col] = brick;
             }
@@ -235,10 +239,10 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
      * This method adjusts the spawning weights such that bricks with higher rarity values are less likely
      * to be spawned. As the player's level increases, the likelihood of spawning rarer bricks increases slightly.
      *
-     * @param brickTypes   An array of {@code BrickType} enums representing different brick types.
-     * @return             An array of integers representing the calculated weights for each brick type.
+     * @param brickTypes An array of {@code BrickType} enums representing different brick types.
+     * @return An array of integers representing the calculated weights for each brick type.
      */
-    public int[] calculateBrickRarityWeights(BrickType[] brickTypes) {
+    public int[] calculateBrickRarityWeights(Brick[] brickTypes) {
         int[] weights = new int[brickTypes.length];
 
         for (int i = 0; i < brickTypes.length; i++) {
@@ -314,45 +318,28 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
     }
 
     @Override
-    public void render() {
-        shaker = new Shaker(view);
-
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                loopCount++;
-
-                AutomatedLog.wrapEvent("Rendering screen for arena at loop number " + loopCount, () -> {
-                    if (lastUpdate == 0) {
-                        lastUpdate = now;
-                        return;
-                    }
-
-                    delta = (now - lastUpdate) / 1_000_000_000.0; // Convert nanoseconds to seconds
-                    lastUpdate = now;
-
-                    if (levelUp) {
-                        reload();
-                        levelUp = false;
-                    }
-
-                    clearCanvas();
-
-                    updateProps();
-
-                    updateGraphics();
-
-                    updateEntities();
-                    updateWinLose();
-                    updateEffects();
-                });
+    public void updateAssets() {
+        AutomatedLog.wrapEvent("Updating assets for arena", () -> {
+            if (levelUp) {
+                reload();
+                levelUp = false;
             }
-        }.start();
+
+            clearCanvas();
+
+            updateProps();
+
+            updateGraphics();
+
+            updateEntities();
+            updateWinLose();
+            updateEffects();
+        });
     }
 
     @Override
-    protected void configureListeners() {
-        AutomatedLog.wrapEvent("Configuring listeners for arena", () -> {
+    protected void loadListeners() {
+        AutomatedLog.wrapEvent("Loading event listeners for arena", () -> {
             view.addEventHandler(KeyEvent.class, (EventHandler<KeyEvent>) e -> {
                 KeyCode code = e.getCode();
 
@@ -432,8 +419,7 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
 
             updateLifeStatus();
             updateScoreStatus();
-            updateLevelStatus();
-            updateLevelStatus();
+            updateOrbStatus();
             if (bricks.getComboCount() > 0) {
                 updateComboStatus();
             }
@@ -442,30 +428,27 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
 
     private void updateLifeStatus() {
         AutomatedLog.wrapEvent("Updating player life status in arena", () -> {
-            Text text = new Text(String.valueOf(paddle.getHealth()));
+            Text text = new Text("" + paddle.getHealth());
             text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, gainedALife ? settings.playerLifeCountShowSize : settings.playerLifeCountHideSize));
             text.setStyle("-fx-letter-spacing: 5px;");
-            text.setFill(Color.LIGHTCORAL);
+            text.setFill(settings.playerLifeColor);
 
             DropShadow glow = new DropShadow();
-            glow.setColor(Color.LIGHTCORAL);
+            glow.setColor(settings.playerLifeColor);
             glow.setSpread(0.4);
             glow.setRadius(20);
             text.setEffect(glow);
 
             StackPane container = new StackPane(text);
-            container.setAlignment(Pos.BOTTOM_RIGHT);
+            container.setAlignment(Pos.TOP_RIGHT);
             container.setPrefSize(view.getCanvas().getWidth(), view.getCanvas().getHeight());
 
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
             WritableImage image = container.snapshot(params, null);
 
-            double centerX = settings.playerLifeX;
-            double centerY = settings.playerLifeY;
-
-            double x = centerX - (image.getWidth() / 2);
-            double y = centerY - (image.getHeight() / 2);
+            double x = settings.playerLifeX - (image.getWidth() / 2);
+            double y = settings.playerLifeY - (image.getHeight() / 2);
 
             graphics.drawImage(image, x, y);
 
@@ -507,10 +490,10 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
         });
     }
 
-    private void updateLevelStatus() {
+    private void updateOrbStatus() {
         AutomatedLog.wrapEvent("Updating all orbs status in arena", () -> {
-            Text text = new Text(String.valueOf(level));
-            text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, levelUp ? settings.levelShowSize : settings.levelHideSize));
+            Text text = new Text("" + orbs.size());
+            text.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, gainedMultiOrb ? settings.orbStatusShowSize : settings.orbStatusHideSize));
             text.setStyle("-fx-letter-spacing: 5px;");
             text.setFill(settings.orbColor);
 
@@ -528,17 +511,17 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
             params.setFill(Color.TRANSPARENT);
             WritableImage image = container.snapshot(params, null);
 
-            double centerX = settings.levelX;
-            double centerY = settings.levelY;
+            double centerX = settings.orbStatusX;
+            double centerY = settings.orbStatusY;
 
             double x = centerX - (image.getWidth() / 2);
             double y = centerY - (image.getHeight() / 2);
 
             graphics.drawImage(image, x, y);
 
-            if (levelUp) {
+            if (gainedMultiOrb) {
                 PauseTransition pause = new PauseTransition(Duration.millis(140));
-                pause.setOnFinished(event -> levelUp = false);
+                pause.setOnFinished(event -> gainedMultiOrb = false);
                 pause.play();
             }
         });
@@ -594,56 +577,58 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
                     return;
                 }
 
-                if (mainOrb.collidesWith(brick)) {
-                    brick.damage();
-                    if (brick.dead()) {
-                        blurrer.on = true;
+                orbs.each(orb -> {
+                    if (orb.collidesWith(brick)) {
+                        brick.damage();
+                        if (brick.dead()) {
+                            blurrer.on = true;
 
-                        int maxPossibleHealth = settings.brickMaxPossibleHealth;
+                            int maxPossibleHealth = settings.brickMaxPossibleHealth;
 
-                        paddle.addScore(BrickScore.DESTROYED);
-                        Color[] effectColors = new Color[maxPossibleHealth + 1]; // add one for indicator color
-                        for (int i = 0; i < maxPossibleHealth; i++) {
-                            effectColors[i] = Color.rgb(0, 255 - i * 100, 255 - i * 100);
-                        }
-
-                        if (brick instanceof CollectibleBrick collectible) {
-                            effectColors[effectColors.length - 1] = collectible.getType().color();
-                        } else {
-                            effectColors[effectColors.length - 1] = effectColors[(int) (Math.random() * maxPossibleHealth)];
-                        }
-
-                        entityEffects.add(new Explosion(brick.getX(), brick.getY(), settings.brickExplosionPiecesArc, effectColors, settings.brickExplosionPiecesNum, settings.appHeight, settings.engineGravity));
-
-                        bricks.trackDestroyed();
-                        bricks.triggerCombo();
-                        destroyedABrick = true;
-                        if (settings.enableScreenShake) {
-                            // Screen shakes intensifies based on the combo count.
-                            shaker.trigger(ShakeMagnitude.LIGHT);
-                            if (bricks.getComboCount() > 5) {
-                                shaker.trigger(ShakeMagnitude.EXTREME);
-                            } else if (bricks.getComboCount() > 3) {
-                                shaker.trigger(ShakeMagnitude.HEAVY);
-                            } else if (bricks.getComboCount() > 2) {
-                                shaker.trigger(ShakeMagnitude.MEDIUM);
+                            paddle.addScore(Score.DESTROYED);
+                            Color[] effectColors = new Color[maxPossibleHealth + 1]; // add one for indicator color
+                            for (int i = 0; i < maxPossibleHealth; i++) {
+                                effectColors[i] = Color.rgb(0, 255 - i * 100, 255 - i * 100);
                             }
+
+                            if (brick instanceof CollectibleBrick collectible) {
+                                effectColors[effectColors.length - 1] = collectible.getType().color();
+                            } else {
+                                effectColors[effectColors.length - 1] = effectColors[(int) (Math.random() * maxPossibleHealth)];
+                            }
+
+                            entityEffects.add(new Explosion(brick.getX(), brick.getY(), settings.brickExplosionPiecesArc, effectColors, settings.brickExplosionPiecesNum, settings.appHeight, settings.engineGravity));
+
+                            bricks.trackDestroyed();
+                            bricks.triggerCombo();
+                            destroyedABrick = true;
+                            if (settings.enableScreenShake) {
+                                // Screen shakes intensifies based on the combo count.
+                                shaker.trigger(ShakeMagnitude.LIGHT);
+                                if (bricks.getComboCount() > 5) {
+                                    shaker.trigger(ShakeMagnitude.EXTREME);
+                                } else if (bricks.getComboCount() > 3) {
+                                    shaker.trigger(ShakeMagnitude.HEAVY);
+                                } else if (bricks.getComboCount() > 2) {
+                                    shaker.trigger(ShakeMagnitude.MEDIUM);
+                                }
+                            }
+
+                            if (brick instanceof CollectibleBrick collectible) {
+                                collectible.drop();
+                                collectibles.add(collectible.getCollectible());
+                            }
+
+                            audios.playWithVolume("enemyDestroyed", AudioVolume.HIGH);
+                        } else {
+                            paddle.addScore(Score.HIT);
+
+                            audios.play("enemyHit");
                         }
 
-                        if (brick instanceof CollectibleBrick collectible) {
-                            collectible.drop();
-                            collectibles.add(collectible.getCollectible());
-                        }
-
-                        audios.playWithVolume("enemyDestroyed", AudioVolume.HIGH);
-                    } else {
-                        paddle.addScore(BrickScore.HIT);
-
-                        audios.play("enemyHit");
+                        orb.randomizeAngle(Math.PI / 4);
                     }
-
-                    mainOrb.randomizeAngle(Math.PI / 4);
-                }
+                });
             });
             bricks.update(delta);
             bricks.draw(graphics);
@@ -665,6 +650,8 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
                 if (collectible.collidesWith(paddle)) {
                     collectible.collect();
 
+                    audios.play("playerCollect");
+
                     if (collectible instanceof LargePaddleCollectible largePaddle) {
                         paddle.enlarge();
 
@@ -674,9 +661,12 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
                         gainedALife = true;
 
                         audios.play("playerHeal");
-                    }
+                    } else if (collectible instanceof MultiOrbCollectible multiOrb) {
+                        loadOrbs(3);
+                        loadCannon();
 
-                    audios.play("playerCollect");
+                        audios.play("playerReload");
+                    }
                 }
             });
             collectibles.update(delta, settings.appHeight);
@@ -698,24 +688,26 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
         AutomatedLog.wrapEvent("Updating the state of the paddle for the arena", () -> {
             paddle.update(delta, settings.appWidth, settings.appHeight);
 
-            if (mainOrb.collidesWith(paddle)) {
-                paddle.triggerKnockback();
+            orbs.each(orb -> {
+                if (orb.collidesWith(paddle)) {
+                    paddle.triggerKnockback();
 
-                audios.play("playerHit");
-            }
-
-            if (mainOrb.hasAttacked()) {
-                paddle.damage();
-
-                blurrer.animateRedOverlay();
-                if (paddle.getHealth() == 0) {
-                    blurrer.animateFullScreen(true);
-                    lose = true;
-                    paddle.minusScore(-settings.playerLifeLostScore);
+                    audios.play("playerHit");
                 }
 
-                audios.play("playerDamage");
-            }
+                if (orb.hasAttacked()) {
+                    paddle.damage();
+
+                    blurrer.animateRedOverlay();
+                    if (paddle.getHealth() == 0) {
+                        blurrer.animateFullScreen(true);
+                        lose = true;
+                        paddle.minusScore(-settings.playerLifeLostScore);
+                    }
+
+                    audios.play("playerDamage");
+                }
+            });
 
             paddle.draw(graphics);
         });
@@ -737,13 +729,10 @@ public class ArenaScreen extends breakout.core.screens.ArenaScreen implements De
 
     private void updateOrb() {
         AutomatedLog.wrapEvent("Updating the state of the orb for the arena", () -> {
-            mainOrb.update(delta, settings.appWidth, (int) (settings.appHeight + mainOrb.getHeight()));
-
-            if (mainOrb instanceof StandardOrb standard) {
-
-            }
-
-            mainOrb.draw(graphics);
+            orbs.each(orb -> {
+                orb.update(delta, settings.appWidth, (int) (settings.appHeight + mainOrb.getHeight()));
+                orb.draw(graphics);
+            });
         });
     }
 

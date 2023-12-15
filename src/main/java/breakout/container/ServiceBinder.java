@@ -37,7 +37,6 @@ public class ServiceBinder extends DefaultServiceBinder {
     private void registerFactories() {
         // Enemies
         container.registerRegular("rectangleCollectibleBrickFactory", RectangleCollectibleBrickFactory.class);
-
         container.registerRegular("rectangleStandardBrickFactory", RectangleStandardBrickFactory.class);
 
         // Collectibles

@@ -4,7 +4,7 @@ import breakout.container.DependenciesInjectable;
 import javafx.scene.paint.Color;
 
 public enum Collectible implements DependenciesInjectable {
-    MULTIORB(settings.orbColor),
+    MULTI_ORB(settings.orbColor),
     LIFE(settings.playerLifeColor),
     LARGE_PADDLE(settings.playerColor);
 

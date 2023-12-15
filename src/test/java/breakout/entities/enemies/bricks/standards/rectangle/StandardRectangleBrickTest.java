@@ -1,8 +1,7 @@
 package breakout.entities.enemies.bricks.standards.rectangle;
 
 import breakout.container.ServiceBinder;
-import breakout.entities.enemies.bricks.Brick;
-import breakout.entities.enemies.bricks.tags.BrickType;
+import breakout.entities.enemies.bricks.tags.Brick;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -13,10 +12,10 @@ import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for the {@link Brick} class.
+ * Test class for the {@link breakout.entities.enemies.bricks.Brick} class.
  */
 public class StandardRectangleBrickTest {
-    private Brick brick;
+    private breakout.entities.enemies.bricks.Brick brick;
 
     @Before
     public void setUp() {
@@ -83,20 +82,20 @@ public class StandardRectangleBrickTest {
      */
     @Test
     public void typeTest() {
-        assertEquals(MockBrick.type(), BrickType.STANDARD);
+        assertEquals(MockBrick.type(), Brick.STANDARD);
     }
 
     /**
-     * A mock implementation of the {@link Brick} class for testing purposes.
+     * A mock implementation of the {@link breakout.entities.enemies.bricks.Brick} class for testing purposes.
      */
-    private static class MockBrick extends Brick {
-        private static final BrickType type = BrickType.STANDARD;
+    private static class MockBrick extends breakout.entities.enemies.bricks.Brick {
+        private static final Brick type = Brick.STANDARD;
 
         public MockBrick(double x, double y) {
             super(x, y);
         }
 
-        public static BrickType type() {
+        public static Brick type() {
             return type;
         }
     }

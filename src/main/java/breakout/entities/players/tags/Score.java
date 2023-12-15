@@ -1,14 +1,14 @@
-package breakout.entities.enemies.bricks.tags;
+package breakout.entities.players.tags;
 
 import breakout.container.DependenciesInjectable;
 
-public enum BrickScore implements DependenciesInjectable {
+public enum Score implements DependenciesInjectable {
     HIT(settings.brickHitScore),
     DESTROYED(settings.brickDestroyedScore);
 
     private final int score;
 
-    BrickScore(int score) {
+    Score(int score) {
         this.score = score;
     }
 

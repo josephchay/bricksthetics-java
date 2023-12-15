@@ -9,13 +9,10 @@ import javafx.stage.Stage;
  * The screen which handles all the logic and rendering for the menu.
  */
 abstract public class MenuScreen extends Screen {
-    public MenuScreen(Stage stage) {
-        super(stage);
+    public MenuScreen(Stage stage, double width, double height) {
+        super(stage, width, height);
     }
 
-    /**
-     * Load the static UI template
-     */
     @Override
     protected void loadTemplate() {
         AutomatedLog.wrapEvent("Loading template for epilogue screen.", () -> {
@@ -24,20 +21,8 @@ abstract public class MenuScreen extends Screen {
         });
     }
 
-    /**
-     * Load all assets for the menu.
-     */
     @Override
     protected void loadAssets() {
-        AutomatedLog.wrapEvent("Loading assets for epilogue screen.", () -> {
-            syslog.info("No assets assigned.");
-        });
-    }
-
-    @Override
-    public void render() {
-        AutomatedLog.wrapEvent("Rendering screen for menu.", () -> {
-
-        });
+        eventlog.info("No assets to load for menu screen.");
     }
 }
