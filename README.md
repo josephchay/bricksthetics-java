@@ -1,12 +1,38 @@
-# Brick Breaker Game
+# Bricksthetics
 
 ---
 
 ## Project Information
-The Brick Breaker game revitalizes the classic arcade genre with a Java-based rendition that challenges players to 
-fire the randomly placed cannon (but on a fixed y position) and then controlling a paddle to bound the orb upwards to demolish a dynamic array of brick formations.
-As the game progresses, each level introduces a tougher level of bricks with more health, but balancing them out by also generating more collectible bricks to introduce a fun yet layer of strategic depth.
-This game was developed with much great **focus on aesthetics**.
+Bricksthetics is a captivating game that reinvents the classic brick-breaking experience with a focus on aesthetics and user engagement. 
+It boasts a sleek, minimalist design, complemented by a range of interactive features that elevate gameplay. 
+Enjoy dynamic levels with varying patterns and complexities, enhanced by customizable options for a personalized touch. 
+The inclusion of intuitive controls and accessibility features ensures a seamless and inclusive gaming experience. 
+With its combination of visual beauty and engaging gameplay, Bricksthetics is a delightful escape for gamers seeking both challenge and charm.
+
+![Brand Logo](https://github.com/josephchay/COMP2042_CW_hcyjc11/assets/136827046/37127517-a597-46a4-8084-84ea5be15659)
+
+---
+
+## Table of Contents
+- [Showcase](#showcase)
+- [Installation Setup](#installation-setup)
+    - [Java Development Kit (JDK)](#java-development-kit-jdk)
+    - [Apache Maven](#apache-maven)
+    - [Running the Application](#running-the-application)
+        - [Intellij](#intellij)
+- [Project Structure](#project-structure)
+  - [Core Package](#core-package)
+  - [External Framework Package](#external-framework-package)
+- [Contribution Guidelines](#contribution-guidelines)
+- [Code of Conduct](#code-of-conduct)
+- [Constributors and Acknowledgements](#contributors-and-acknowledgements)
+- [Changelog](#changelog)
+- [License](#license)
+- [Final Note](#final-note)
+
+---
+
+## Showcase
 
 ![](src/main/resources/images/samples/sample.png)
 
@@ -14,31 +40,47 @@ This project was developed solely on JavaFX version 21 only by utilizing depende
 
 ---
 
-## Table of Contents
-- [Project Setup](#project-setup)
-  - [Command Line](#command-line)
-  - [Intellij](#intellij)
-- [Project Structure](#project-structure)
-- [Refactoring](#refactoring)
-  - [MVC Pattern](#mvc-pattern)
-- [Project New Heavy Classes](#project-new-heavy-classes)
-- [Project Features](#project-features)
-  - [Particle Physics](#particle-physics)
-  - [Brick Explosion](#brick-explosion)
-  - [Orb Tail Trails](#orb-tail-trails)
-  - [Cannon Aim Line](#cannon-aim-line)
-- [Features To Be Implemented](#features-to-be-implemented)
-- [Code Insurance](#code-insurance)
-- [Project Hinderings](#project-hinderings)
 
----
+## Installation Setup
 
-## Project Setup
-The project was tested on 2 different machines, and was found to be working successfully on both using both the command line and Intellij tools.
+### Java Development Kit (JDK):
+1. Download and install the JDK from [here](https://www.oracle.com/java/technologies/javase-downloads.html) or from [here](https://openjdk.java.net/install/).
+2. Set the environment variable `JAVA_HOME` to the JDK installation directory.
+3. Add the JDK `bin` directory to the `PATH` environment variable.
+4. Verify the installation by running the following command in the terminal:
+  ```
+  java -version
+  ```
+5. The output should be similar to the following:
+  ```
+    java version [java version]
+    Java(TM) SE Runtime Environment (build [java version])
+    Java HotSpot(TM) [bit]-Bit Server VM (build [java version], mixed mode, sharing)
+   ```
+### Apache Maven:
+1. Download and install Maven from [here](https://maven.apache.org/download.cgi).
+2. Set the environment variable `MAVEN_HOME` to the Maven installation directory.
+3. Add the Maven `bin` directory to the `PATH` environment variable.
+4. Verify the installation by running the following command in the terminal:
+  ```
+  mvn -version
+  ```
+5. The output should be similar to the following:
+  ```
+    Apache Maven 3.x.x ([unique-build-id])
+    Maven home: [path to maven installation]
+    Java version: [java version], vendor: [vendor name], runtime: [path to java runtime environment]
+    Default locale: [locale], platform encoding: [encoding]
+    OS name: "[os name]", version: "[os version]", arch: "[os architecture]", family: "[os family]"
+  ```
 
-### Command Line
+### Running the Application
 
 To run this project form the command line, follow these steps:
+1. Clone the repository using the following command:
+  ```
+  git clone
+  ```
 1. Open your command line terminal.
 2. Navigate to the root directory of the project where the `pom.xml` file is located.
 3. Then, execute the following Maven command:
@@ -56,7 +98,7 @@ To run this project form the command line, follow these steps:
   mvn clean install
   ```
 
-### Intellij
+#### Intellij
 
 To run this project from Intellij, follow these steps:
 1. Open Intellij IDEA.
@@ -88,116 +130,80 @@ In the case of this project, the `players` are further specialized to `Paddle` a
 
 ---
 
-## Refactoring
-### MVC Pattern
+## Contribution Guidelines
 
-The project designs the MVC in such a way where all actors (player, block) and projectiles (ball) are considered entities,
-which are the models such as the `Paddle`, `Orb`, `Brick`. The controllers will be used to dispatch any screen major actions including the `ArenaController`. 
-While the parts which involve rendering were assigned to two separate class functionalities namely, the screen such as `ArenaScreen` handle the screen states, 
-game and element logics, and contains its respective view such as `ArenaView` which contains all the static UI components.
+We enthusiastically welcome and appreciate contributions from the community.
+To ensure smooth collaboration and maintain the quality of the project, please follow these guidelines:
 
-1. Original Class Modifications
-    - Entities that were found in the `Main` and `GameEngine` original classes were split up into their respective classes
-    - Application logic like the start, and stop methods were all moved to the `Launcher` class which focus primarily on handling the state of the application itself.
-    - The main functionalities of The player class has been moved to a new class called `Paddle`
-    - The ball functionalities have been moved to the `Orb` and `StandardOrb` classes
-    - The original `Block` class has been renamed to `Brick` and `CollectibleBrick` where each respective functionality is implemented in.
-    - The original `LoadSave` class has been renamed to `QueryBuilder` whereby some functionalites have also been delegated to classes such as
-`Connector`, and `SchemaBuilder`.
-    - The `Score` original class has its functionalities moved to the `Paddle` class. as most of the code involves handling the display logic rather than the state itself. 
-    - The `Bonus` original class has been redefined to `Collectible` class which contains the main functionalities for all powerups
-which will be extended by more specific classes like `LifeCollectible` and `LargePaddleCollectible` which will take effect once their respective brick type gets destroyed.
+1. **Fork & Clone**
+    - Begin by forking the repository to your GitHub account.
+    - Once done, clone the forked repo to your local machine.
 
-2. Design Patterns
-    - Abstract Factory patterns were use a lot mainly for the factories involving generating bricks including `CollectibleBrickFactory` and `StandardBrickFactory`.
-    - Proxy pattern was used for the `DB` class which provides a gateway access to the database `Connector`, then the `SchemaBuilder`, followed by the `QueryBuilder`.
-   The access are via the same effect like method chaining making it look like coming from a single class.
-    - IoC pattern was used by the `Container`, `ServiceBinder` classes used for provider registrations, and `DependenciesInjectable` to provide access to all the injected dependencies.
-    - Open-Closed principles were used for classes like `Settings` which ensures that no changes can be done to its property externally.
-    - Polymorphism was used for classes like `Logger`, `Screen`, and `View`. More explicit ones include `PlayerFactory`, and `EnemyFactory` as well as some of those in the `contracts` core package 
-whereby implementations are being left for the future but currently acts as a marker for its type.
-    - Abstract classes were used for multiple classes `LifeBrick`, and `LargePaddleBrick`. These classes are currently extended by one type of shape.
-However, future developers can add more shape types to the bricks which will extend from these abstract classes, allowing to define common methods and fields that can be shared,
-as well as maintaining consistent implementations for better redability and debugging
-    - Singleton pattern was used for classes like `ImagerySystem`, `AudioSystem` and `Filesystem` as the entire application should only
-run on one system each. This avoids constant unnecessary recreation which can introduce overhead to the system.
+2. **Set Up & Install**
+    - Follow the [Installation Setup](#installation-setup) to get the development environment ready.
 
----
+3. **Create a New Branch**
+    - For every new feature or bugfix, create a separate branch.
+    - Use a descriptive name for the branch, such as `feature/new-feature-name` or `bugfix/issue-number`.
 
-## Project New Heavy Classes
-Throughout the project, there were a substantial amounts of new classes, however some have much greater
-functionality contribution to the application's backend support.
+4. **Write Quality Code**
+    - Ensure your code adheres to the existing coding standards and conventions of the project.
+    - Properly comment your code and keep functions and classes modular.
 
-### Logging
-The `Logger` class was created to provide standardized handling for all the extended logger classes. 
-It was created to ensure that the application retains the same way of logging but may be different 'severity' 'types' and minor options.
-This removes redundant code and code smell whereby necessary changes are much likelier to be needed to change in the `Logger` abstract class 
-without having to do the same for all three of its current sub-classes `SystemLogger`, `AuditLogger`, and `EventLogger`.
+5. **Test Thoroughly**
+    - Before submitting a pull request, ensure that your code changes do not break any existing functionality.
+    - Write tests if applicable.
 
-### Database
-Although storage and data are stored in the local files instead of an actual database. it still remains better to simulate the
-system of the real world practice. The classes `Connector`, `SchemaBuilder`, and `QueryBuilder` and `DB` were created for this sole purpose.
-This allows future developers to easily perform database migration with little efforts and changes of code since it is already set up.
-Moreover, if they decide to return to the filesystem again. it would inherently be much easier likewise.
+6. **Commit and Push**
+    - Commit your changes with meaningful commit messages.
+    - Once satisfied, push the branch to your fork on GitHub.
+
+7. **Submit a Pull Request (PR)**
+    - Go to the main repo on GitHub and click on the “New pull request” button.
+    - Choose the branch you just pushed from the dropdown and submit the PR with a comprehensive description of the changes.
+
+8. **PR Review**
+    - Maintainers will review your PR. Address any comments or requested changes.
+    - Once approved, your PR will be merged into the main branch.
 
 ---
 
-## Project Features
+## Code of Conduct
 
-### Particle Physics
-This is yet the hardest but challenging part of the journey throughout this assignment where I managed to implement the physics aesthetics
-on majorly the brick explosion, and orb tail trails, as well as the ball aim line.
+In order to ensure that the Bricksthetics community is welcoming to all, please review and abide by the [Code of Conduct](
 
-### Brick Explosion
-The brick explosion mainly uses the `Explosion` class which has a composition relationship with the `Particle` with the multiplicity of 1 to many whereby whenever the
-explosion goes inactive, the particles will all immediately go out of state. Each of the particle are calculated based on a fixed engine gravity, air resistance,
-a certain factor of bounce as well as the altitude. As the altitude decreases, so will the velocity of the particles increase
-imitating how gravity works in real life. They gradually begin to fade as they shrink and eventually disappear.
+## Contributors and Acknowledgements
 
-### Orb Tail Trails
-The orb tail trails are implemented using the `Trail` class which has a composition relationship with the `EmittedParticle` class with a multiplicity of 1 to many.
-This feature is rather much simpler as it does not act like the "explosion" effect with great effect, rather this is an "emitted" effect
-where it should not have high deviation from the previous position of the orb, making it look like a tail. This is implemented using a fixed range of randomization,
-within a given spot behind the ball. The multiple particles line-up then creates the illusion of trailing effect.
+This project would not have been possible without the contributions, feedback, and expertise of the following individuals:
 
-### Cannon Aim Line
-This is rather interesting as this requires to calculate based on the mouse position after consideration of the 
-x, y (both being at the top left of the orb), radius centers coordinates of the stationary orb. This projectile is instead dynamic compared to
-the traditional (left, right, up down) rotating in 90 degrees almost or all the time, making it rather static and boring. 
-With a different firing angle, the orb can then be able to alter its movement much more accordingly to the guidedX and guidedY 
-which was the reason why the `GuidedProjectile` class was created for this sole purpose.
+- **Joseph Chay**
+    - _Lead Developer_
+    - [GitHub](https://github.com/josephchay)
+    - [Twitter](https://twitter.com/josephchay)
+    - [LinkedIn](https://www.linkedin.com/in/josephchay)
 
 ---
 
-## Features To Be Implemented
+## Changelog
 
-By far, all features implemented are complete and do not have any bugs or issues.
+Detailed changes for each release are documented in the [release notes](https://github.com/josephchay/bricksthetics/releases).
 
-Regarding newer features to be implemented. It is recommended for future developers to continue on and add more
-brick shapes, and also introduced newer and better physics calculations to the game.
-
----
-
-## Code Insurance
-Test cases using jUnit4 were also created for more crucial method functionalities of classes in the project including 
-`PaddleTest`, `StandardOrbTest`, `CannonTest`, `StandardBrickTest`, `StandardBrickFactoryTest`, `StandardPlayerTest`, `StandardCanonTest` 
-to ensure that the code is working as intended.
-
-Necessary JavaDoc was also created for all classes and methods to ensure that the code is well documented and can be easily understood by future developers.
-Some methods may not have JavaDoc as they are self-explanatory and do not require any further explanation, or they are overriden from parent classes which already contain JavaDoc comments.
-
-The project was also converted to a Maven project to ensure that it can run without any local dependencies and can instead
-operate successfully with libraries from Maven.
+For more detailed changelog entries and version histories, see our [changelog](CHANGELOG.md).
 
 ---
 
-## Project Hinderings
-Throughout the more than the first three quarters of the project. Commits, merging and pushes were al of the ordinary. However,
-since the last quarter of the project, there were some issues with the git two-auth factor authentication where even correct pins would not allow a sign in
-where it was not able to push to the remote repository. This [post](https://www.reddit.com/r/github/comments/16a3izb/2fa_code_problems/) here 
-by another person in just 3 months ago as of writing further proves that I am not the only one encountering this issue.
-Out of all the ways I tried to recover from this, it was always to no avail.
+## License
+MIT License
 
-This issue was only resolve by creating a new account and a new repository and simulating the previous commits and pushes.
-Hence, the commit timings may seem very close for some. Regardless, all issues were solve as I was still able to use my 
-version control just as usual after the simulations.
+Copyright (c) 2023-present Bricksthetics Developers
+
+For more details, please refer to the [license](LICENSE.md).
+
+---
+
+## Final Note
+
+If you discover any security vulnerability within Bricksthetics, please [send](mailto:josephemmanuelchay@gmail.com) Joseph Chay an email.
+
+Should you have any questions or detailed discussions requirements,
+please use the project's [Issues](https://github.com/josephchay/bricksthetics/issues) section.
