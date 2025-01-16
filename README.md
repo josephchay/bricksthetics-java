@@ -26,6 +26,7 @@ With its combination of visual beauty and engaging gameplay, Bricksthetics is a 
   - [Project Structure](#project-structure)
     - [Core Package](#core-package)
     - [External Framework Package](#external-framework-package)
+  - [POM](#pom)
   - [Contribution Guidelines](#contribution-guidelines)
   - [Code of Conduct](#code-of-conduct)
   - [Contributors and Acknowledgements](#contributors-and-acknowledgements)
@@ -104,7 +105,6 @@ To run this project form the command line, follow these steps:
   ```
   mvn javafx:run
   ```
-
   or alternatively:
   ```
   java -jar target/bricksthetics-1.0-SNAPSHOT.jar
@@ -141,6 +141,18 @@ In the case of this project, the `players` are further specialized to `Paddle` a
 `projectiles` are then specialized to `Orb` class.
 
 ---
+
+## POM
+
+If you made any changes to the `pom.xml` file, run this command after the changes:
+
+```
+mvn clean package
+```
+
+before starting the application again.
+
+--
 
 ## Contribution Guidelines
 
