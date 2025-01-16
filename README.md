@@ -14,21 +14,24 @@ With its combination of visual beauty and engaging gameplay, Bricksthetics is a 
 ---
 
 ## Table of Contents
-- [Showcase](#showcase)
-- [Installation Setup](#installation-setup)
-    - [Java Development Kit (JDK)](#java-development-kit-jdk)
-    - [Apache Maven](#apache-maven)
+- [Bricksthetics](#bricksthetics)
+  - [Project Information](#project-information)
+  - [Table of Contents](#table-of-contents)
+  - [Showcase](#showcase)
+  - [Installation Setup](#installation-setup)
+    - [Java Development Kit (JDK):](#java-development-kit-jdk)
+    - [Apache Maven:](#apache-maven)
     - [Running the Application](#running-the-application)
-        - [Intellij](#intellij)
-- [Project Structure](#project-structure)
-  - [Core Package](#core-package)
-  - [External Framework Package](#external-framework-package)
-- [Contribution Guidelines](#contribution-guidelines)
-- [Code of Conduct](#code-of-conduct)
-- [Constributors and Acknowledgements](#contributors-and-acknowledgements)
-- [Changelog](#changelog)
-- [License](#license)
-- [Final Note](#final-note)
+      - [Intellij](#intellij)
+  - [Project Structure](#project-structure)
+    - [Core Package](#core-package)
+    - [External Framework Package](#external-framework-package)
+  - [Contribution Guidelines](#contribution-guidelines)
+  - [Code of Conduct](#code-of-conduct)
+  - [Contributors and Acknowledgements](#contributors-and-acknowledgements)
+  - [Changelog](#changelog)
+  - [License](#license)
+  - [Final Note](#final-note)
 
 ---
 
@@ -96,6 +99,15 @@ To run this project form the command line, follow these steps:
 5. Alternatively, you can execute the following combined command:
   ```
   mvn clean install
+  ```
+6. Now to start the application, run:
+  ```
+  mvn javafx:run
+  ```
+
+  or alternatively:
+  ```
+  java -jar target/bricksthetics-1.0-SNAPSHOT.jar
   ```
 
 #### Intellij
